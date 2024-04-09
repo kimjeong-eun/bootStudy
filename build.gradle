@@ -32,11 +32,11 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok'  //테스트코드에서 lombok 사용 가능하게
     testAnnotationProcessor 'org.projectlombok:lombok' //테스트코드에서 lombok 사용 가능하게
 
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools' //boot용 개발 환경
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client' //db용 드라이버
 
-    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'  //톰캣제공
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'  //테스트 환경 구축
 }
 
 tasks.named('bootBuildImage') {

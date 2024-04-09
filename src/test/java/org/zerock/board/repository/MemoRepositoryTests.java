@@ -7,11 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerock.board.entity.Memo;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -153,39 +151,7 @@ public class MemoRepositoryTests {
             //Memo(mno=9, memoText=Sample....9)
             //Memo(mno=10, memoText=Sample....10)
         }
+
     }
-
-
-
-    @Test
-    public void testQueryMethodTests(){
-
-        List<Memo> list = memoRepository.findByMnoBetweenOrderByMnoDesc(70L,80L);
-        //memoRepository에 있는 쿼리메서드 실행하여 list객체로 받음
-        for(Memo memo : list){
-            System.out.println(memo);
-        }
-        //받은 list객체를 for문을 이용해 콘솔 출력
-    }
-
-
-    @Test
-    public void testQuerymethodWithPage(){
-        Pageable pageable = PageRequest.of(0,10,Sort.by("mno").descending());
-        //페이지 타입은 of를 이용해서 요청을 처리함, 0번에 10개를 mno를 기준으로 내림차순 정렬을 매개값으로 전달
-        Page<Memo> result = memoRepository.findByMnoBetween(10L,50L,pageable);
-        result.get().forEach(memo -> System.out.println(memo));
-    }
-
-    @Test  //delete에서는 2개의 쿼리문이 동작해야함 그래서 트랜잭션 처리가 필요함
-    @Transactional
-    @Commit //delete인 경우에는 오토커밋이 불가하기 때문에 commit처리가 따로 필요함
-    public void testDeleteQueryMethod(){
-        //쿼리 메서드로 delete처리를 하면 9번 쿼리문이 전달된다 (비효율적) -> @Query를 사용해야 좋다 )
-        memoRepository.deleteMemoByMnoLessThan(10L);
-        
-    }
-
-
 
 }

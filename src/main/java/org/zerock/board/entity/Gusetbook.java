@@ -5,7 +5,7 @@ import lombok.*;
 
 @Entity
 @Getter
-@Builder
+@Builder //빌더패턴 사용
 @AllArgsConstructor //빌더패턴 필수
 @NoArgsConstructor //빌더패턴 필수
 @ToString // 객체가 아닌 문자열로 변환

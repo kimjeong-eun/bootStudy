@@ -1,4 +1,4 @@
-package org.zerock.board.service;
+package service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,12 +7,13 @@ import org.zerock.board.dto.GuestbookDTO;
 import org.zerock.board.dto.PageRequestDTO;
 import org.zerock.board.dto.PageResultDTO;
 import org.zerock.board.entity.Gusetbook;
+import org.zerock.board.service.GuestbookService;
 
 @SpringBootTest
 public class GuestbookServiceTest {
 
     @Autowired
-    private  GuestbookService service;
+    private GuestbookService service;
 
     @Test
     public  void  testRegister(){
@@ -40,5 +41,32 @@ public class GuestbookServiceTest {
         }
         System.out.println("=================================");
         resultDTO.getPageList().forEach(i-> System.out.println(i));
+    }
+
+    @Test
+    public void testSearch(){
+
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .page(1)
+                .size(10)
+                .type("tc")
+                .keyword("한글")
+                .build();
+
+        PageResultDTO<GuestbookDTO,Gusetbook> resultDTO = service.getList(pageRequestDTO);
+
+        System.out.println("Prev : "+resultDTO.isPrev());
+        System.out.println("NExt :" + resultDTO.isNext());
+        System.out.println("Total:" + resultDTO.getTotalPage());
+
+        System.out.println("=========================================");
+        for (GuestbookDTO guestbookDTO : resultDTO.getDtoList()){
+            System.out.println(guestbookDTO);
+        }
+
+        System.out.println("=============================================");
+        resultDTO.getPageList().forEach(i-> System.out.println(i));
+
+
     }
 }

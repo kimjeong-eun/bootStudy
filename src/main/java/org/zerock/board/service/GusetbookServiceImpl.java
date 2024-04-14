@@ -1,5 +1,7 @@
 package org.zerock.board.service;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -10,6 +12,7 @@ import org.zerock.board.dto.GuestbookDTO;
 import org.zerock.board.dto.PageRequestDTO;
 import org.zerock.board.dto.PageResultDTO;
 import org.zerock.board.entity.Gusetbook;
+import org.zerock.board.entity.QGusetbook;
 import org.zerock.board.repository.GuestbookRepository;
 
 import java.util.Optional;
@@ -45,8 +48,12 @@ public class GusetbookServiceImpl implements  GuestbookService{
     public PageResultDTO<GuestbookDTO, Gusetbook> getList(PageRequestDTO requestDTO) {
 
         // requestDTO : 기본 page:1 size:10
-        Pageable pageable = requestDTO.getPageable(Sort.by("gno"));
-        Page<Gusetbook> result = repository.findAll(pageable);
+        Pageable pageable = requestDTO.getPageable(Sort.by("gno").descending());
+
+        BooleanBuilder booleanBuilder = getSearch(requestDTO); //검색 조건 처리
+
+        Page<Gusetbook> result = repository.findAll(booleanBuilder,pageable); //쿼리dsl사용
+
         //entity Page객체로 result를 받음
         //result를 dto로 변환해주어야함
         Function<Gusetbook,GuestbookDTO> fn = (entity ->entityToDto(entity));
@@ -58,7 +65,7 @@ public class GusetbookServiceImpl implements  GuestbookService{
     @Override
     public GuestbookDTO read(Long gno) {
 
-        Optional<Gusetbook> result =repository.findById(gno); //gno로 게시물 객체 ㅈ가져옴
+        Optional<Gusetbook> result =repository.findById(gno); //gno로 게시물 객체 가져옴
         //entity객체는 dto객체로 바꿔줘야함 !!!!
 
         return result.isPresent()? entityToDto(result.get()): null;
@@ -80,5 +87,39 @@ public class GusetbookServiceImpl implements  GuestbookService{
             entity.changeContent(dto.getContent());
             repository.save(entity);
         }
+    }
+    private BooleanBuilder getSearch(PageRequestDTO requestDTO){
+        //쿼리 dsl 처리
+
+        String type = requestDTO.getType();
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        QGusetbook qGusetbook = QGusetbook.gusetbook;
+        String keyword = requestDTO.getKeyword();
+        BooleanExpression expression = qGusetbook.gno.gt(0L); //표현식 생성
+        booleanBuilder.and(expression);
+
+        if(type==null || type.trim().length()==0){
+            //검색 조건이 없는경우 기본 표현식으로 결과처리한 것을 보냄
+            return  booleanBuilder;
+        }
+
+        //검색 조건을 작성하기
+        BooleanBuilder conditionBuilder = new BooleanBuilder();
+        if(type.contains("t")){
+            conditionBuilder.or(qGusetbook.title.contains(keyword));
+        }
+        if(type.contains("c")){
+            conditionBuilder.or(qGusetbook.content.contains(keyword));
+        }
+        if(type.contains("w")){
+            conditionBuilder.or(qGusetbook.writer.contains(keyword));
+
+        }
+
+        //모든 조건 통합
+        booleanBuilder.and(conditionBuilder);
+
+        return  booleanBuilder;
+
     }
 }

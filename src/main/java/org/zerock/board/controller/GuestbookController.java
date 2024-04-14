@@ -29,6 +29,7 @@ public class GuestbookController {
 
     @GetMapping("/list")
     public void list(PageRequestDTO pageRequestDTO, Model model) {
+        //자동으로 PageRequestDTO가 들어옴
         log.info("GuestbookContoller.list() 메서드 실행");
 
         //pageResultDTO 반환
@@ -81,6 +82,8 @@ public class GuestbookController {
         service.modify(dto);
 
         redirectAttributes.addAttribute("page",requestDTO.getPage());
+        redirectAttributes.addAttribute("type",requestDTO.getType());
+        redirectAttributes.addAttribute("keyword",requestDTO.getKeyword());
         redirectAttributes.addAttribute("gno",dto.getGno());
 
 

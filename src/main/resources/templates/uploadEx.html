@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<input name="uploadFiles" type="file" multiple>
+<button class="uploadBtn">Upload</button>
+
+<div class="uploadResult"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+        crossorigin="anonymous"></script>
+
+<script>
+  $('.uploadBtn').click(function( ) {
+
+    var formData = new FormData();
+
+    var inputFile = $("input[type='file']");
+
+    var files = inputFile[0].files; //업로드한 파일
+
+    for (var i = 0; i < files.length; i++) {
+      console.log(files[i]);
+      formData.append("uploadFiles", files[i]);
+    }
+
+    //실제 업로드 처리 ajax 사용
+    $.ajax({
+      url: '/uploadAjax',
+      processData: false,
+      contentType: false,  //보내는 타입 -> multipart/form-data 타입을 사용하기 위한 용도
+      data: formData,
+      type: 'POST',
+      dataType:'json', //받는타입
+      success: function(result){
+        console.log(result);
+        //나중에 화면 처리
+        showUploadedImages(result);
+      },
+      error: function(jqXHR, textStatus, errorThrown){
+        console.log(textStatus);
+      }
+
+    }); //ajax 종료
+  }); //json 종료
+
+  function showUploadedImages(arr){
+
+    console.log(arr);
+
+    var divArea = $(".uploadResult");
+
+    var str = "";
+
+    for(var i = 0; i < arr.length; i++){
+      // divArea.append("<img src='/display?fileName="+arr[i].thumbnailURL+"'>");
+
+
+      str += "<div>";
+      str += "<img src='/display?fileName="+arr[i].thumbnailURL+"'>";
+      str += "<button class='removeBtn' data-name='"+arr[i].imageURL +"'>REMOVE</button>"
+      str += "</div>";
+    }
+    divArea.append(str);
+
+  }
+  $(".uploadResult").on("click", ".removeBtn", function(e){
+
+    var target = $(this);
+    var fileName = target.data("name");
+    var targetDiv = $(this).closest("div");
+
+    console.log(fileName);
+
+    //jQuery.post( url [, data] [, success(data, textStatus, jqXHR)] [, dataType] )Returns : jqXHR
+    //
+    $.post('/removeFile', {fileName: fileName}, function(result){
+      console.log(result);
+      if(result === true){
+        targetDiv.remove();
+      }
+    })
+  });
+</script>
+
+</body>
+</html>

@@ -8,20 +8,21 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@ToString(exclude = "board") // @ToString 주의
-public class Reply extends BaseEntity{
+@ToString(exclude = {"movie","member"})
+public class Review  extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long rno;
+    private Long reviewnum;
 
-    private String replytext;
-    private String replyer;
-
-    //연관 관계지정
     @ManyToOne(fetch = FetchType.LAZY)
-    private  Board board; //
+    private  Movie movie;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private MovieMember member;
 
+    private  int grade;
+
+    private String text;
 
 }

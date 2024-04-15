@@ -21,11 +21,11 @@ public class ReplyRepositoryTests {
     public void insertReply(){
         IntStream.rangeClosed(1,300).forEach(i->{
             //3부터 102의 임의 번호
-            long bno = (long) (Math.random()*100)+3;
+            long bno = (long) (Math.random()*100)+2;
 
             Board board = Board.builder().bno(bno).build();
 
-            Reply reply = Reply.builder().text("Reply..."+i).board(board).replyer("guest").build();
+            Reply reply = Reply.builder().replytext("Reply..."+i).board(board).replyer("guest").build();
             replyRepository.save(reply);
         });
     }

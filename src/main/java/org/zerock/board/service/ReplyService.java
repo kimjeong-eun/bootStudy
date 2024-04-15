@@ -23,7 +23,7 @@ public interface ReplyService {
 
         Reply reply = Reply.builder()
                 .rno(replyDTO.getRno())
-                .text(replyDTO.getText())
+                .replytext(replyDTO.getReplyText())
                 .replyer(replyDTO.getReplyer())
                 .board(board)
                 .build();
@@ -36,7 +36,7 @@ public interface ReplyService {
 
         ReplyDTO dto = ReplyDTO.builder()
                 .rno(reply.getRno())
-                .text(reply.getText())
+                .replyText(reply.getReplytext())
                 .replyer(reply.getReplyer())
                 .regDate(reply.getRegDate())
                 .modDate(reply.getModDate())

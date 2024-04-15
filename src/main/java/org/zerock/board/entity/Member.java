@@ -20,4 +20,7 @@ public class Member extends BaseEntity{
     private String name;
 
 
+
+
+
 }

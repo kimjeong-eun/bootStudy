@@ -64,7 +64,6 @@ public class BoardController {
         redirectAttributes.addFlashAttribute("msg",bno);
 
         return "redirect:/board/list";
-
     }
 
     @PostMapping("/modify")

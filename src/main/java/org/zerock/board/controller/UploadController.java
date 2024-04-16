@@ -146,6 +146,7 @@ public class UploadController {
     @PostMapping("/removeFile")
     public ResponseEntity<Boolean> removeFile(String fileName){
         //파일삭제시 섬네일 파일까지 같이 삭제
+        //수정수정
 
         String srcFileName= null;
 

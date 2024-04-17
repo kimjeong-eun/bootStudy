@@ -1,17 +1,27 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content} )}">
 
   <th:block th:fragment="content">
 
-    <h1 class="mt-4">Movie List Page
+
+      <button type="button" class="btn btn-outline-primary" name="logout_btn">LOGOUT</button>
+      <form action="/logout" method="post" name="logoutForm">
+
+      </form>
+
+    <h1 class="mt-4" th:with="user = ${#authentication.principal}">Movie List Page
       <span>
+
                 <a th:href="@{/movie/register}">
                     <button type="button" class="btn btn-outline-primary">REGISTER
                     </button>
                 </a>
-            </span>
+
+      </span>
     </h1>
 
     <form action="/movie/list" method="get" id="searchForm">
@@ -70,6 +80,23 @@
     </ul>
 
     <script th:inline="javascript">
+
+      $(document).ready(function (){
+
+        $("button[name='logout_btn']").on("click",function (e){
+
+          e.preventDefault();
+
+          alert("로그아웃버튼 눌림")
+          var form = $("form[name='logoutForm']");
+
+          form.submit();
+
+        })
+
+
+      })
+
 
     </script>
   </th:block>

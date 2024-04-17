@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.zerock.board.dto.ReviewDTO;
 import org.zerock.board.service.ReviewService;
@@ -18,6 +19,7 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/{mno}/all")
     public ResponseEntity<List<ReviewDTO>> getList(@PathVariable("mno") Long mno){
 
@@ -29,6 +31,7 @@ public class ReviewController {
         return new ResponseEntity<>(reviewDTOList, HttpStatus.OK);
     }
 
+    @PreAuthorize("permitAll()")
     @PostMapping("/{mno}")
     public ResponseEntity<Long> addReview(@RequestBody ReviewDTO movieReviewDTO){
 
@@ -41,6 +44,7 @@ public class ReviewController {
 
     }
 
+    @PreAuthorize("permitAll()")
     @PutMapping("/{mno}/{reviewnum}")
     public ResponseEntity<Long> modifyReview(@PathVariable Long reviewnum,@RequestBody ReviewDTO movieReviewDTO,@PathVariable("mno") Long mno){
 
@@ -53,6 +57,7 @@ public class ReviewController {
         return new ResponseEntity<>(reviewnum,HttpStatus.OK);
     }
 
+    @PreAuthorize("permitAll()")
     @DeleteMapping("/{mno}/{reviewnum}")
     public ResponseEntity<Long> removeReview( @PathVariable Long reviewnum ,@PathVariable("mno") Long mno ){
         log.info("---------------modify removeReview--------------");

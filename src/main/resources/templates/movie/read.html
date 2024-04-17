@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content} )}">
 
@@ -88,7 +90,7 @@
           <div class="modal-body">
             <div class="form-group">
               <label >Reviewer ID</label>
-              <input type="text" class="form-control" name="mid" >
+              <input type="text" class="form-control" name="mid">
             </div>
             <div class="form-group">
               <label >Grade <span class="grade"></span></label>
@@ -102,8 +104,9 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary reviewSaveBtn">Save changes</button>
-            <button type="button" class="btn btn-warning modifyBtn">Modify </button>
-            <button type="button" class="btn btn-danger removeBtn">Remove </button>
+              <button type="button" class="btn btn-warning modifyBtn">Modify </button>
+              <button type="button" class="btn btn-danger removeBtn">Remove </button>
+
           </div>
         </div>
       </div>
@@ -135,7 +138,7 @@
     <link th:href="@{/css/starrr.css}" rel="stylesheet">
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
 
-    <script>
+    <script th:inline="javascript">
       $(document).ready(function(e) {
 
         var grade = 0;
@@ -214,9 +217,9 @@
 
               console.log(review);
 
-              str += '    <div class="card-body" data-reviewnum='+review.reviewnum+' data-mid='+review.mid+'>';
+              str += '    <div class="card-body" data-reviewnum="'+review.reviewnum+'" data-mid="'+review.mid+'" data-nickname="'+review.nickname+'">';
               str += '    <h5 class="card-title">'+review.text+' <span>'+ review.grade+'</span></h5>';
-              str += '    <h6 class="card-subtitle mb-2 text-muted">'+review.nickname+'</h6>';
+              str += '    <h6 class="card-subtitle mb-2 text-muted" >'+review.nickname+'</h6>';
               str += '    <p class="card-text">'+ formatTime(review.regDate) +'</p>';
               str += '    </div>';
             });
@@ -231,12 +234,12 @@
         //modify reveiw
 
         var reviewnum;
+        var currentuser = [[${#authentication.principal.username}]]
 
         $(".reviewList").on("click", ".card-body", function() {
 
           $(".reviewSaveBtn").hide();
-          $(".removeBtn , .modifyBtn").show();
-
+          $(".removeBtn , .modifyBtn").hide();
 
           var targetReview = $(this);
 
@@ -248,7 +251,15 @@
           var grade = targetReview.find('.card-title span').html();
           $(".starrr a:nth-child("+grade+")").trigger('click');
 
+
+
+          if(targetReview.data("nickname") === currentuser){
+
+            $(".removeBtn , .modifyBtn").show();
+          }
+
           $('.reviewModal').modal('show');
+
         });
 
 

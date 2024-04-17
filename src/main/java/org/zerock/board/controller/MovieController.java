@@ -3,6 +3,7 @@ package org.zerock.board.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.Banner;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,11 +24,12 @@ public class MovieController {
 
     private  final MovieService movieService; // final
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/register")
     public void register(){
 
     }
-
+    @PreAuthorize("permitAll()")
     @PostMapping("/register")
     public String register(MovieDTO movieDTO , RedirectAttributes redirectAttributes){
 
@@ -41,6 +43,7 @@ public class MovieController {
 
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/list")
     public void list(PageRequestDTO pageRequestDTO, Model model){
 
@@ -49,6 +52,14 @@ public class MovieController {
         model.addAttribute("result" , movieService.getList(pageRequestDTO));
     }
 
+    @PreAuthorize("permitAll()")
+    @PostMapping("/list")
+    public void listp(PageRequestDTO pageRequestDTO, Model model){
+
+        model.addAttribute("result" , movieService.getList(pageRequestDTO));
+    }
+
+    @PreAuthorize("permitAll()")
     @GetMapping({"/read","/modify"})
     public void read(long mno , @ModelAttribute("requestDTO") PageRequestDTO requestDTO , Model model){
 

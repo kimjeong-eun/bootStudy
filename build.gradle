@@ -6,8 +6,6 @@ buildscript {
 // 쿼리dsl Qdomain 셍성 -> Gradle -> Tasks -> other -> complie.Java
 // 쿼리dsl Qdomain 셍성 오류시 Gradle -> Tasks -> build -> Clean -> 셍성
 
-
-
 plugins {
     id 'java'
     id 'war'
@@ -69,17 +67,24 @@ dependencies {
             "com.querydsl:querydsl-apt:${queryDslVersion}:jakarta"
     )
     //워크북용
-   // implementation 'org.modelmapper:modelmapper:3.1.0'
-   //  implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
-   // implementation 'org.springframework.boot:spring-boot-starter-validation'
+     implementation 'org.modelmapper:modelmapper:3.1.0'
+     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
+     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // https://mvnrepository.com/artifact/net.coobird/thumbnailator 섬네일 처리
     // 안됨 compile group: 'net.coobird', name: 'thumbnailator', version: '0.4.12'
     implementation 'net.coobird:thumbnailator:0.4.16'
 
-
     //스프링 시큐리티
     implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // 707 추가 부트 3이상 부터는 6 사용 함 https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity6
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
+
+
+    //카카오로그인을위핸 oauth2 추가 // 743 추가 외부 인증용 카카오, 구글,  네이버 등....
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
 
 }
 

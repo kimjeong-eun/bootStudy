@@ -21,10 +21,8 @@ import org.zerock.board.service.MovieService;
 @RequiredArgsConstructor
 public class MovieController {
 
-
     private  final MovieService movieService; // final
 
-    @PreAuthorize("permitAll()")
     @GetMapping("/register")
     public void register(){
 

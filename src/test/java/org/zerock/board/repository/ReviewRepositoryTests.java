@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.zerock.board.entity.Movie;
 import org.zerock.board.entity.MovieMember;
 import org.zerock.board.entity.Review;
+import org.zerock.board.entity.SecurityMember;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -20,6 +21,7 @@ public class ReviewRepositoryTests {
     @Test
     public void insertMovieReviews(){
 
+/*
         //200개의 리뷰 등록
         IntStream.rangeClosed(1,200).forEach(i->{
 
@@ -28,7 +30,7 @@ public class ReviewRepositoryTests {
 
             //리뷰어번호
             Long mid = ((long)(Math.random()*100)+1);
-            MovieMember member = MovieMember.builder()
+            SecurityMember member = SecurityMember.builder()
                     .mid(mid)
                     .build();
 
@@ -41,6 +43,7 @@ public class ReviewRepositoryTests {
             reviewRepository.save(movieReview);
 
         });
+*/
 
 
     }

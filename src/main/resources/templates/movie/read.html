@@ -88,9 +88,9 @@
             </button>
           </div>
           <div class="modal-body">
-            <div class="form-group">
+            <div class="form-group" th:with="user=${#authentication.principal.username}">
               <label >Reviewer ID</label>
-              <input type="text" class="form-control" name="mid">
+              <input type="text" class="form-control" name="mid" th:value="${user}" readonly />
             </div>
             <div class="form-group">
               <label >Grade <span class="grade"></span></label>
@@ -162,7 +162,6 @@
 
 
         $(".addReviewBtn").click(function () {
-          inputMid.val("");
           inputText.val("");
 
           $(".removeBtn ,  .modifyBtn").hide();

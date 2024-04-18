@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Commit;
 import org.zerock.board.entity.MemberRole;
 import org.zerock.board.entity.SecurityMember;
 
@@ -58,4 +59,16 @@ public class SecurityMemberRepositoryTests {
         });
 
     }
+
+    @Commit
+    @Test
+    public void testUpate(){
+
+        String mid = "jeongeun587@naver.com";
+        String mpw = passwordEncoder.encode("12345");
+        securityMemberRepository.updatePassword(mpw,mid);
+
+    }
+
+
 }

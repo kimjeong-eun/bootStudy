@@ -13,10 +13,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.zerock.board.security.CustomUserDetailsService;
 import org.zerock.board.security.handler.Custom403Handler;
+import org.zerock.board.security.handler.CustomSocialLoginSuccessHandler;
 
 import javax.sql.DataSource;
 
@@ -34,6 +36,13 @@ public class CustomSecurityConfig {
     public PasswordEncoder passwordEncoder(){
         //패스워드 인코더
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler(){
+        //로그인 성공 핸들러 빈객체 등록
+
+        return new CustomSocialLoginSuccessHandler(passwordEncoder());
     }
     
     //시큐리티설정하는 곳
@@ -88,8 +97,9 @@ public class CustomSecurityConfig {
         // 차단됨 http.oauth2Login().loginPage("/member/login");
         // 746 추가
         http.oauth2Login( httpSecurityOAuth2LoginConfigurer -> {
-            httpSecurityOAuth2LoginConfigurer.loginPage("/member/login");
-            httpSecurityOAuth2LoginConfigurer.defaultSuccessUrl("/movie/list");
+            httpSecurityOAuth2LoginConfigurer.loginPage("/member/login")
+                    .successHandler(authenticationSuccessHandler());
+            //.httpSecurityOAuth2LoginConfigurer.defaultSuccessUrl("/movie/list");
         });
 
         return http.build();
@@ -107,7 +117,6 @@ public class CustomSecurityConfig {
         repo.setDataSource(dataSource); //데이터소스 객체 할당
         return repo;
     }
-
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){

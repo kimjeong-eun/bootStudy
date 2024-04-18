@@ -5,7 +5,7 @@
 
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content} )}">
 
-  <th:block th:fragment="content">
+  <th:block th:fragment="content" th:with="user = ${#authentication.principal}">
 
 
       <button type="button" class="btn btn-outline-primary" name="logout_btn">LOGOUT</button>
@@ -13,9 +13,14 @@
 
       </form>
 
-    <h1 class="mt-4" th:with="user = ${#authentication.principal}">Movie List Page
-      <span>
+    <th:block sec:authorize="isAuthenticated()">
 
+      현재로그인 사용자 : [[${user.email}]]
+
+    </th:block>
+
+    <h1 class="mt-4">Movie List Page
+      <span>
                 <a th:href="@{/movie/register}">
                     <button type="button" class="btn btn-outline-primary">REGISTER
                     </button>
@@ -62,6 +67,7 @@
       </tbody>
     </table>
 
+    <!--페이징-->
     <ul class="pagination h-100 justify-content-center align-items-center">
 
       <li class="page-item " th:if="${result.prev}">

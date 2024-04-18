@@ -11,9 +11,4 @@ public class MemberJoinDTO {
     private boolean del;
     private boolean social;
 
-
-
-
-
-
 }

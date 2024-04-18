@@ -66,7 +66,7 @@ dependencies {
             "jakarta.annotation:jakarta.annotation-api",
             "com.querydsl:querydsl-apt:${queryDslVersion}:jakarta"
     )
-    //워크북용
+    //워크북용  modelmapper , layout
      implementation 'org.modelmapper:modelmapper:3.1.0'
      implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
      implementation 'org.springframework.boot:spring-boot-starter-validation'
